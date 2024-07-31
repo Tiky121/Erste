@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>VR Small Meeting Room</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            font-family: 'Arial', sans-serif;
+        }
+        #index-button {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 50px;
+            height: 50px;
+            background: none;
+            background-image: url('Images/leave.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        #index-button:hover {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+    <button id="index-button" onclick="window.location.href='MeetingRoomSmall.html'"></button>
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://unpkg.com/three@0.157.0/build/three.module.js",
+            "three/addons/": "https://unpkg.com/three@0.157.0/examples/jsm/",
+            "@lumaai/luma-web": "https://unpkg.com/@lumaai/luma-web@0.2.0/dist/library/luma-web.module.js"
+        }
+    }
+    </script>
+    <script type="module">
+        import { WebGLRenderer, PerspectiveCamera, Scene } from 'three';
+        import { VRButton } from 'three/addons/webxr/VRButton.js';
+        import { LumaSplatsThree } from '@lumaai/luma-web';
+
+        function DemoVR() {
+            let renderer = new WebGLRenderer({ antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.xr.enabled = true;
+            document.body.appendChild(renderer.domElement);
+
+            let camera = new PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.rotation.x = 180;
+            camera.rotation.y = 80;
+            camera.rotation.z = -90;
+            let scene = new Scene();
+
+            let vrButton = VRButton.createButton(renderer);
+            document.body.appendChild(vrButton);
+
+            let splats = new LumaSplatsThree({
+                // Kind Humanoid @RyanHickman
+                source: 'https://lumalabs.ai/capture/dd9d6395-122b-4801-a8a9-d62aa22c4abb',
+                // disable three.js shader integration for performance
+                enableThreeShaderIntegration: false,
+            });
+
+            splats.onLoad = () => {
+                // Rotate the splat
+					splat.rotation.y = 0; // Rotate 90 degrees around the y-axis
+					splat.rotation.x = 0.1;
+					splat.rotation.z = -0.1;
+            };
+
+            scene.add(splats);
+
+            function dispose() {
+                splats.dispose();
+                vrButton.remove();
+            }
+
+            renderer.setAnimationLoop(() => {
+                renderer.render(scene, camera);
+            });
+
+            return { dispose };
+        }
+
+        DemoVR();
+    </script>
+</body>
+</html>
