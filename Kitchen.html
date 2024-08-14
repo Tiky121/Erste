@@ -22,10 +22,9 @@
 			</div>
 		</div>
 		<img id="logo" src="Images/logo.png" alt="Logo"> 
-		<button id="vr-button" onclick="window.location.href='VRMeetingRoomSmall.html'"></button>
+		<button id="vr-button" onclick="window.location.href='VRKitchen.html'"></button>
 		<button id="home-button" onclick="window.location.href='indexPC.html'"></button>
 	</div>
-	
 
 	<script type="importmap">
 	{
@@ -43,8 +42,7 @@
 		import { LumaSplatsThree } from '@lumaai/luma-web';
 		import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
-		let renderer, camera, controls, scene, splat, loader, floorMesh;
-		let out, outMaterial;
+		let renderer, camera, controls, scene, splat, loader, floorMesh, out, outMaterial;
 		let moveSpeed = 0.1;
 		let direction = new Vector3();
 		let frontVector = new Vector3();
@@ -85,7 +83,7 @@
 			scene.background = new Color('white');
 
 			splat = new LumaSplatsThree({
-				source: 'https://lumalabs.ai/capture/dd9d6395-122b-4801-a8a9-d62aa22c4abb',
+				source: 'https://lumalabs.ai/capture/d2b9d517-5d93-46ef-bc87-58a21ddff291',
 				enableThreeShaderIntegration: true,
 				particleRevealEnabled: true,
 			});
@@ -100,11 +98,6 @@
 					scene.background = capturedTexture;
 					scene.backgroundBlurriness = 0;
 
-					// Rotate the splat
-					splat.rotation.y = 0; // Rotate 90 degrees around the y-axis
-					splat.rotation.x = 0.1;
-					splat.rotation.z = -0.1;
-
 					loadTV();
 				});
 			};
@@ -113,7 +106,7 @@
 
 			loader = new GLTFLoader();
 
-			loader.load('Models/MeetingRoomSmall/floor.glb', (gltf) => {
+			loader.load('Models/MeetingRoom1/floor2.glb', (gltf) => {
 				floorMesh = gltf.scene;
 				floorMesh.traverse((child) => {
 					if (child instanceof Mesh) {
@@ -126,10 +119,10 @@
 
 			loader.load('Models/out.glb', (gltf) => {
 				out = gltf.scene;
-				out.position.set(-2, -0.1, -0.56);
+				out.position.set(-0.83, 0, 0);
 				out.rotation.set(
 					THREE.MathUtils.degToRad(0),   // Rotácia okolo osi X v stupňoch (0°)
-					THREE.MathUtils.degToRad(0),  // Rotácia okolo osi Y v stupňoch (90°)
+					THREE.MathUtils.degToRad(45),  // Rotácia okolo osi Y v stupňoch (90°)
 					THREE.MathUtils.degToRad(0)    // Rotácia okolo osi Z v stupňoch (0°)
 				);
 				out.scale.set(0.3, 0.3, 0.3);
@@ -144,37 +137,25 @@
 				scene.add(out);
 			});
 
-			document.addEventListener('mousedown', (event) => {
-				if (event.button === 0) { // Left mouse button
-					const distance = camera.position.distanceTo(out.position);
-					if (distance < 0.5) { // Adjust the distance threshold as needed
-						window.location.href = 'Corridor.html';
-					}
-				}
-			});
-
-
-			const light = new THREE.AmbientLight(0xffffff);
-			scene.add(light);
+			const light = new THREE.AmbientLight( 0xffffff );
+        	scene.add(light);
 
 			document.addEventListener('keydown', onKeyDown);
 			document.addEventListener('keyup', onKeyUp);
+
+			document.addEventListener('mousedown', (event) => {
+				if (event.button === 0) { // Left mouse button
+					const distance = camera.position.distanceTo(out.position);
+					if (distance < 1) { // Adjust the distance threshold as needed
+						window.location.href = 'Part1.html';
+					}
+				}
+			});
 		}
 
 		function loadTV() {
-			loader.load('Models/MeetingRoom2/tv.glb', (gltf) => {
-				let tv = gltf.scene;
-				tv.position.y = 0;
+			loader.load('Models/MeetingRoom1/tv.glb', (gltf) => {
 				
-
-				tv.traverse((child) => {
-					if (child instanceof Mesh) {
-						child.material.color.set(0x525459);
-						child.material.metalness = 0.5;
-						child.material.roughness = 0.05;
-						child.material.envMapIntensity = 1;
-					}
-				});
 
 				// Start the animation loop after everything is loaded
 				renderer.setAnimationLoop(frameLoop);
@@ -248,26 +229,26 @@
 			}
 
 			if (out) {
-				const distance = camera.position.distanceTo(out.position);
-				if (distance < 0.5) {
-					out.traverse((child) => {
-						if (child.isMesh) {
-							child.material.color.set(0x2870ed); 
-						}
-					});
-				} else {
-					out.traverse((child) => {
-						if (child.isMesh) {
-							child.material.color.set(0xffffff);
-						}
-					});
-				}
-			}
-			
-
+                const distance = camera.position.distanceTo(out.position);
+                if (distance < 1) { // Adjust the distance threshold as needed
+                    out.traverse((child) => {
+                        if (child.isMesh) {
+                            child.material.color.set(0x2870ed); 
+                        }
+                    });
+                } else {
+                    out.traverse((child) => {
+                        if (child.isMesh) {
+                            child.material.color.set(0xffffff); // Change to original color
+                        }
+                    });
+                }
+            }
+		
 
 			renderer.render(scene, camera);
 		}
+
 
 		init();
 	</script>

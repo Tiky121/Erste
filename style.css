@@ -1,11 +1,60 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+html {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #fff;
+    font-family: 'Inter', sans-serif;
+}
 
-html, body {
+canvas {
+    width: 100vw;
+    height: 100vh;
+}
+
+dialog {
+    width: 100%;
+    text-align: center;
+    max-width: 20em;
+    color: white;
+    background-color: #000;
+    border: none;
+    position: relative;
+    transform: translate(-50%, -50%);
+}
+
+#progress-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+}
+
+progress {
+    width: 100%;
+    height: 1em;
+    border: none;
+    background-color: #fff;
+    color: #eee;
+}
+
+progress::-webkit-progress-bar {
+    background-color: #333;
+}
+
+progress::-webkit-progress-value {
+    background-color: #eee;
+}
+
+progress::-moz-progress-bar {
+    background-color: #eee;
+}
+
+
+body {
     margin: 0;
     padding: 0;
     overflow: hidden;
     font-family: 'Inter', sans-serif;
-    background-color: #000;
 }
 
 #blocker {
@@ -67,7 +116,7 @@ html, body {
     width: 8vh;
     height: 8vh;
     background: none; /* Odstránenie pozadia tlačidla */
-    background-image: url('Images/vr.png');
+    background-image: url('/Images/vr.png');
     background-size: contain;
     background-repeat: no-repeat;
     border: none;
@@ -87,7 +136,7 @@ html, body {
     width: 8vh;
     height: 8vh;
     background: none; /* Odstránenie pozadia tlačidla */
-    background-image: url('Images/home.png');
+    background-image: url('/Images/home.png');
     background-size: contain;
     background-repeat: no-repeat;
     border: none;
@@ -99,5 +148,3 @@ html, body {
 #home-button:hover {
     transform: scale(1.1);
 }
-
-

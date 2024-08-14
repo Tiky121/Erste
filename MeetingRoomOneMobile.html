@@ -2,30 +2,43 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<head>
-		<meta charset="UTF-8">
-		<link rel="stylesheet" href="main.css">
+	<link rel="stylesheet" href="main.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/nipplejs/0.8.7/nipplejs.min.js"></script>
+	<style>
+		html, body {
+			margin: 0;
+			padding: 0;
+			overflow: hidden; /* Zabrániť posúvaniu stránky */
+			background-color: #000;
+			height: 100%;
+			width: 100%;
+			touch-action: none; /* Zakázať predvolené správanie dotyku */
+		}
+		#joystick-container {
+			position: absolute;
+			bottom: 20px;
+			left: 20px;
+			width: 150px;
+			height: 150px;
+			background-color: rgba(0, 0, 0, 0.3);
+			border-radius: 50%;
+			z-index: 1000;
+			touch-action: none; /* Zakázať predvolené správanie dotyku na joysticku */
+		}
+		#look-area {
+			position: absolute;
+			top: 0;
+			right: 0;
+			width: 50%;
+			height: 100%;
+			z-index: 1000;
+			touch-action: none; /* Zakázať predvolené správanie dotyku v oblasti pohľadu */
+		}
+	</style>
 </head>
 <body>
-	<div id="blocker">
-		<div id="instructions">
-			<p style="font-size:36px">Click to Start</p>
-			<div id="controls">
-				<div class="control-item">
-					<img class="control-image" src="Images/wasd.png" alt="Move">
-					<p class="control-label">Movement</p>
-				</div>
-				<div class="control-item">
-					<img class="control-image" src="Images/mouse.png" alt="Look">
-					<p class="control-label">Look</p>
-				</div>
-			</div>
-		</div>
-		<img id="logo" src="Images/logo.png" alt="Logo"> 
-		<button id="vr-button" onclick="window.location.href='VRMeetingRoomOne.html'"></button>
-		<button id="home-button" onclick="window.location.href='indexPC.html'"></button>
-	</div>
-	
+	<div id="joystick-container"></div>
+	<div id="look-area"></div>
 
 	<script type="importmap">
 	{
@@ -38,19 +51,24 @@
 	</script>
 	<script type="module">
 		import * as THREE from 'three';
-		import { WebGLRenderer, PerspectiveCamera, Scene, Vector3, Color, Raycaster, Mesh, MathUtils } from 'three';
+		import { WebGLRenderer, PerspectiveCamera, Scene, Vector3, Color, Raycaster, Mesh } from 'three';
 		import { PointerLockControls } from 'three/addons/controls/PointerLockControls.js';
 		import { LumaSplatsThree } from '@lumaai/luma-web';
 		import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
-		let renderer, camera, controls, scene, splat, loader, floorMesh;
-		let out, outMaterial, out2, outMaterial2;
-		let moveSpeed = 0.1;
+		let renderer, camera, controls, scene, splat, loader, floorMesh, out, outMaterial, out2, outMaterial2;
+		let moveSpeed = 0.3;  // Increased movement speed
 		let direction = new Vector3();
 		let frontVector = new Vector3();
 		let sideVector = new Vector3();
 		let raycaster = new Raycaster();
 		let collisionDistance = 0.2;
+		let isLooking = false;
+		let lastTouchX, lastTouchY;
+
+		// Rotation angles
+		let yaw = 0;  // Horizontal rotation (yaw)
+		let pitch = 0;  // Vertical rotation (pitch)
 
 		function init() {
 			renderer = new WebGLRenderer({ antialias: false });
@@ -62,24 +80,6 @@
 			camera = new PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 1000);
 			camera.position.z = 1;
 			camera.position.x = 3;
-
-			controls = new PointerLockControls(camera, document.body);
-			controls.minPolarAngle = MathUtils.degToRad(75); // Limit looking down to 45 degrees
-			controls.maxPolarAngle = MathUtils.degToRad(125); // Limit looking up to 135 degrees
-
-			controls.addEventListener('lock', () => {
-				document.getElementById('instructions').style.display = 'none';
-				document.getElementById('blocker').style.display = 'none';
-			});
-
-			controls.addEventListener('unlock', () => {
-				document.getElementById('blocker').style.display = 'block';
-				document.getElementById('instructions').style.display = '';
-			});
-
-			document.getElementById('blocker').addEventListener('click', () => {
-				controls.lock();
-			});
 
 			scene = new Scene();
 			scene.background = new Color('white');
@@ -96,10 +96,7 @@
 
 			splat.onLoad = () => {
 				splat.captureCubemap(renderer).then(capturedTexture => {
-					scene.environment = capturedTexture;
-					scene.background = capturedTexture;
-					scene.backgroundBlurriness = 0;
-
+					
 					loadTV();
 				});
 			};
@@ -159,35 +156,113 @@
 				scene.add(out2);
 			});
 
+			const light = new THREE.AmbientLight(0xffffff);
+			scene.add(light);
+
+			document.addEventListener('keydown', onKeyDown);
+			document.addEventListener('keyup', onKeyUp);
+
 			document.addEventListener('mousedown', (event) => {
 				if (event.button === 0) { // Left mouse button
 					const distance = camera.position.distanceTo(out.position);
 					if (distance < 1) { // Adjust the distance threshold as needed
-						window.location.href = 'Part3.html';
+						window.location.href = 'Part3Mobile.html';
 					}
 				}
 
 				if (event.button === 0) { // Left mouse button
 					const distance = camera.position.distanceTo(out2.position);
 					if (distance < 1) { // Adjust the distance threshold as needed
-						window.location.href = 'Part2.html';
+						window.location.href = 'Part2Mobile.html';
 					}
 				}
 			});
 
+			// Initialize movement joystick
+			initMovementJoystick();
 
-			const light = new THREE.AmbientLight(0xffffff);
-			scene.add(light);
+			// Initialize look area for camera control
+			initLookArea();
+		}
 
-			document.addEventListener('keydown', onKeyDown);
-			document.addEventListener('keyup', onKeyUp);
+		function initMovementJoystick() {
+			const joystick = nipplejs.create({
+				zone: document.getElementById('joystick-container'),
+				mode: 'static',
+				position: { left: '50%', top: '50%' },
+				color: 'white'
+			});
+
+			joystick.on('move', (event, data) => {
+				const forward = data.vector.y;
+				const turn = data.vector.x;
+
+				direction.z = forward * moveSpeed;
+				direction.x = -turn * moveSpeed;
+			});
+
+			joystick.on('end', () => {
+				direction.set(0, 0, 0);
+			});
+		}
+
+		function initLookArea() {
+			const lookArea = document.getElementById('look-area');
+
+			lookArea.addEventListener('touchstart', (event) => {
+				isLooking = true;
+				const touch = event.touches[0];
+				lastTouchX = touch.clientX;
+				lastTouchY = touch.clientY;
+			});
+
+			lookArea.addEventListener('touchmove', (event) => {
+				if (!isLooking) return;
+				const touch = event.touches[0];
+				const deltaX = (touch.clientX - lastTouchX) * 0.005; // Adjust sensitivity by changing the multiplier
+				const deltaY = (touch.clientY - lastTouchY) * 0.005;
+
+				// Apply horizontal rotation (yaw)
+				yaw -= deltaX;
+
+				// Apply vertical rotation (pitch)
+				pitch -= deltaY;
+
+				// Limit the pitch to prevent flipping
+				pitch = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, pitch));
+
+				// Create a quaternion for the new rotation
+				const quaternion = new THREE.Quaternion();
+
+				// Update quaternion based on yaw (Y axis) and pitch (X axis)
+				quaternion.setFromEuler(new THREE.Euler(pitch, yaw, 0, 'YXZ'));
+
+				// Apply the quaternion to the camera
+				camera.quaternion.copy(quaternion);
+
+				lastTouchX = touch.clientX;
+				lastTouchY = touch.clientY;
+			});
+
+			lookArea.addEventListener('touchend', () => {
+				isLooking = false;
+			});
 		}
 
 		function loadTV() {
-			loader.load('Models/MeetingRoom1/tv.glb', (gltf) => {
-				
+			loader.load('Models/MeetingRoom2/tv.glb', (gltf) => {
+				let tv = gltf.scene;
+				tv.position.y = 0;
 
-				// Start the animation loop after everything is loaded
+				tv.traverse((child) => {
+					if (child instanceof Mesh) {
+						child.material.color.set(0x525459);
+						child.material.metalness = 0.5;
+						child.material.roughness = 0.05;
+						child.material.envMapIntensity = 1;
+					}
+				});
+
 				renderer.setAnimationLoop(frameLoop);
 			});
 		}
@@ -221,6 +296,11 @@
 					break;
 			}
 		}
+
+		// Zabránite predvolenému správaniu dotyku na celom dokumente
+		document.addEventListener('touchmove', function(event) {
+			event.preventDefault();
+		}, { passive: false });
 
 		function frameLoop() {
 			let canvas = renderer.domElement;
@@ -257,6 +337,7 @@
 					camera.position.add(movement);
 				}
 			}
+
 			if (out) {
 				const distance = camera.position.distanceTo(out.position);
 				if (distance < 1) {
@@ -273,7 +354,6 @@
 					});
 				}
 			}
-
 			if (out2) {
 				const distance = camera.position.distanceTo(out2.position);
 				if (distance < 1) {
@@ -291,10 +371,8 @@
 				}
 			}
 
-
 			renderer.render(scene, camera);
 		}
-		
 
 		init();
 	</script>

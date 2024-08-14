@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 100vw;
+            background-color: #000;
+            margin: 0;
+            overflow: hidden;
+            font-family: 'Inter', sans-serif;
+        }
+        .layer-container {
+            position: relative;
+            width: 90vh; /* Prispôsobí sa šírke obrazovky */
+            height: 90vh; /* Prispôsobí sa výške obrazovky */
+            max-width: 100%;
+            max-height: 100%;
+            background-color: #000; /* Pre lepšiu viditeľnosť */
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+
+        #logo {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 10vw; /* Adjust the size relative to the viewport width */
+            height: auto;
+            max-width: 150px; /* Max width to ensure it's not too large */
+        }
+        .clickable-button {
+            position: absolute;
+            background-color: rgba(255, 255, 255, 0); /* Transparent background */
+            cursor: pointer;
+            border: none;
+        }
+        .layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        .layer img {
+            width: 100%;
+            height: 100%;
+            transition: transform 0.3s, filter 0.3s;
+            pointer-events: none; /* Prevent interaction with the image */
+        }
+        .animate {
+            transform: scale(1.05);
+            filter: drop-shadow(0 0 12px #2870ed);
+        }
+        .zoom {
+            transform: scale(0.99);
+        }
+        .text-container {
+            position: absolute;
+            top: 30%;
+            right: 2%;
+            width: 30%;
+            color: #fff;
+            font-size: 2em;
+            opacity: 0; /* Initially hidden */
+            transition: opacity 0.2s ease-in-out;
+            text-align: center;
+        }
+        .text-container img {
+            display: block;
+            margin: 0 auto 10px;
+            width: 70%; /* Adjust the size as needed */
+            height: auto;
+        }
+        .text-container.active {
+            opacity: 1; /* Show text when active */
+        }
+    </style>
+</head>
+<body>
+    <img id="logo" src="Images/logo.png" alt="Logo">
+    <div class="layer-container" id="layer-container">
+        <div class="layer">
+            <img src="Images/index/9.png" id="img9">
+        </div>
+        <div class="layer">
+            <img src="Images/index/8.png" id="img8">
+        </div>
+        <div class="layer">
+            <img src="Images/index/7.png" id="img7">
+        </div>
+        <div class="layer">
+            <img src="Images/index/6.png" id="img6">
+        </div>
+        <div class="layer">
+            <img src="Images/index/5.png" id="img5">
+        </div>
+        <div class="layer">
+            <img src="Images/index/4.png" id="img1">
+        </div>
+        <div class="layer">
+            <img src="Images/index/3.png" id="img2">
+        </div>
+        <div class="layer">
+            <img src="Images/index/2.png" id="img3">
+        </div>
+        <div class="layer">
+            <img src="Images/index/1.png" id="img4">
+        </div>
+        
+        
+        <button class="clickable-button" style="top: 18.5%; left: 45%; width: 18%; height: 13.9%;" 
+                onmouseover="animateImage('img1'); zoomIn(); showText('text1')" onmouseout="removeAnimation('img1'); zoomOut(); hideText('text1')" onclick="location.href='MeetingRoomOne.html'"></button>
+        <button class="clickable-button" style="top: 30%; left: 35%; width: 18%; height: 13.9%;" 
+                onmouseover="animateImage('img2'); zoomIn(); showText('text2')" onmouseout="removeAnimation('img2'); zoomOut(); hideText('text2')" onclick="location.href='PlayRoom.html'"></button>
+        <button class="clickable-button" style="top: 30%; left: 55%; width: 35%; height: 20%;" 
+                onmouseover="animateImage('img3'); zoomIn(); showText('text3')" onmouseout="removeAnimation('img3'); zoomOut(); hideText('text3')" onclick="location.href='Part1.html'"></button>
+        <button class="clickable-button" style="top: 50%; left: 35%; width: 45%; height: 40%;" 
+                onmouseover="animateImage('img4'); zoomIn(); showText('text4')" onmouseout="removeAnimation('img4'); zoomOut(); hideText('text4')" onclick="location.href='Kitchen.html'"></button>
+        <button class="clickable-button" style="top: 10%; left: 59%; width: 25%; height: 20%;" 
+                onmouseover="animateImage('img5'); zoomIn(); showText('text5')" onmouseout="removeAnimation('img5'); zoomOut(); hideText('text5')" onclick="location.href='index5.html'"></button>
+        <button class="clickable-button" style="top: 10%; left: 25%; width: 20%; height: 20%;" 
+                onmouseover="animateImage('img9'); zoomIn(); showText('text6')" onmouseout="removeAnimation('img9') ; zoomOut(); hideText('text6')" onclick="location.href='index6.html'"></button>
+        <button class="clickable-button" style="top: 30%; left: 23%; width: 10%; height: 10%;" 
+                onmouseover="animateImage('img7'); zoomIn(); showText('text7')" onmouseout="removeAnimation('img7') ; zoomOut(); hideText('text7')" onclick="location.href='MeetingRoomSmall.html'"></button>
+        <button class="clickable-button" style="top: 25%; left: 10%; width: 12%; height: 15%;" 
+                onmouseover="animateImage('img8'); zoomIn(); showText('text8')" onmouseout="removeAnimation('img8') ; zoomOut(); hideText('text8')" onclick="location.href='MeetingRoomTwo.html'"></button>
+    </div>
+
+    <div class="text-container" id="text1"><img src="Images/Renders/render1.png" alt="Render 1">Meeting Room</div>
+    <div class="text-container" id="text2"><img src="Images/Renders/render2.png" alt="Render 2">Play Room</div>
+    <div class="text-container" id="text3"><img src="Images/Renders/render3.png" alt="Render 3">Office part 1</div>
+    <div class="text-container" id="text4"><img src="Images/Renders/render4.png" alt="Render 4">Kitchen and Dinery</div>
+    <div class="text-container" id="text5"><img src="Images/Renders/render5.png" alt="Render 5">Office part 2</div>
+    <div class="text-container" id="text6"><img src="Images/Renders/render6.png" alt="Render 6">Office part 3</div>
+    <div class="text-container" id="text7"><img src="Images/Renders/render7.png" alt="Render 7">Small Meeting Room</div>
+    <div class="text-container" id="text8"><img src="Images/Renders/render8.png" alt="Render 8">Meeting Room</div>
+
+    <script>
+        function animateImage(id) {
+            document.getElementById(id).classList.add('animate');
+        }
+
+        function removeAnimation(id) {
+            document.getElementById(id).classList.remove('animate');
+        }
+
+        function zoomIn() {
+            document.getElementById('layer-container').classList.add('zoom');
+        }
+
+        function zoomOut() {
+            document.getElementById('layer-container').classList.remove('zoom');
+        }
+
+        function showText(id) {
+            hideAllTexts(); // Hide all texts before showing the new one
+            document.getElementById(id).classList.add('active');
+        }
+
+        function hideText(id) {
+            document.getElementById(id).classList.remove('active');
+        }
+
+        function hideAllTexts() {
+            document.querySelectorAll('.text-container').forEach(function(el) {
+                el.classList.remove('active');
+            });
+        }
+    </script>
+</body>
+</html>

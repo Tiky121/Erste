@@ -44,7 +44,7 @@
 		import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 		let renderer, camera, controls, scene, splat, loader, floorMesh;
-		let out, outMaterial;
+		let out, outMaterial, out2, outMaterial2,out3, outMaterial3, out4, outMaterial4;
 		let moveSpeed = 0.1;
 		let direction = new Vector3();
 		let frontVector = new Vector3();
@@ -85,7 +85,7 @@
 			scene.background = new Color('white');
 
 			splat = new LumaSplatsThree({
-				source: 'https://lumalabs.ai/capture/dd9d6395-122b-4801-a8a9-d62aa22c4abb',
+				source: 'https://lumalabs.ai/capture/b89af07c-3979-4032-9fd5-11969baf5fcd',
 				enableThreeShaderIntegration: true,
 				particleRevealEnabled: true,
 			});
@@ -100,10 +100,7 @@
 					scene.background = capturedTexture;
 					scene.backgroundBlurriness = 0;
 
-					// Rotate the splat
-					splat.rotation.y = 0; // Rotate 90 degrees around the y-axis
-					splat.rotation.x = 0.1;
-					splat.rotation.z = -0.1;
+					
 
 					loadTV();
 				});
@@ -113,7 +110,7 @@
 
 			loader = new GLTFLoader();
 
-			loader.load('Models/MeetingRoomSmall/floor.glb', (gltf) => {
+			loader.load('Models/Corridor/floor.glb', (gltf) => {
 				floorMesh = gltf.scene;
 				floorMesh.traverse((child) => {
 					if (child instanceof Mesh) {
@@ -126,10 +123,10 @@
 
 			loader.load('Models/out.glb', (gltf) => {
 				out = gltf.scene;
-				out.position.set(-2, -0.1, -0.56);
+				out.position.set(1.77, 0, 0.8);
 				out.rotation.set(
 					THREE.MathUtils.degToRad(0),   // Rotácia okolo osi X v stupňoch (0°)
-					THREE.MathUtils.degToRad(0),  // Rotácia okolo osi Y v stupňoch (90°)
+					THREE.MathUtils.degToRad(160),  // Rotácia okolo osi Y v stupňoch (90°)
 					THREE.MathUtils.degToRad(0)    // Rotácia okolo osi Z v stupňoch (0°)
 				);
 				out.scale.set(0.3, 0.3, 0.3);
@@ -144,11 +141,92 @@
 				scene.add(out);
 			});
 
+			loader.load('Models/out.glb', (gltf) => {
+				out2 = gltf.scene;
+				out2.position.set(-1.4, 0, 0.5);
+				out2.rotation.set(
+					THREE.MathUtils.degToRad(0),   // Rotácia okolo osi X v stupňoch (0°)
+					THREE.MathUtils.degToRad(180),  // Rotácia okolo osi Y v stupňoch (90°)
+					THREE.MathUtils.degToRad(0)    // Rotácia okolo osi Z v stupňoch (0°)
+				);
+				out2.scale.set(0.3, 0.3, 0.3);
+
+				out2.traverse((child) => {
+					if (child.isMesh) {
+						outMaterial2 = new THREE.MeshStandardMaterial({ color: 0xffffff });
+						child.material = outMaterial2;
+					}
+				});
+
+				scene.add(out2);
+			});
+
+			loader.load('Models/out.glb', (gltf) => {
+				out3 = gltf.scene;
+				out3.position.set(0.68, 0, -0.67);
+				out3.rotation.set(
+					THREE.MathUtils.degToRad(0),   // Rotácia okolo osi X v stupňoch (0°)
+					THREE.MathUtils.degToRad(0),  // Rotácia okolo osi Y v stupňoch (90°)
+					THREE.MathUtils.degToRad(0)    // Rotácia okolo osi Z v stupňoch (0°)
+				);
+				out3.scale.set(0.3, 0.3, 0.3);
+
+				out3.traverse((child) => {
+					if (child.isMesh) {
+						outMaterial3 = new THREE.MeshStandardMaterial({ color: 0xffffff });
+						child.material = outMaterial3;
+					}
+				});
+
+				scene.add(out3);
+			});
+
+			loader.load('Models/out.glb', (gltf) => {
+				out4 = gltf.scene;
+				out4.position.set(-2, 0, 0);
+				out4.rotation.set(
+					THREE.MathUtils.degToRad(0),   // Rotácia okolo osi X v stupňoch (0°)
+					THREE.MathUtils.degToRad(90),  // Rotácia okolo osi Y v stupňoch (90°)
+					THREE.MathUtils.degToRad(0)    // Rotácia okolo osi Z v stupňoch (0°)
+				);
+				out4.scale.set(0.3, 0.3, 0.3);
+
+				out4.traverse((child) => {
+					if (child.isMesh) {
+						outMaterial4 = new THREE.MeshStandardMaterial({ color: 0xffffff });
+						child.material = outMaterial4;
+					}
+				});
+
+				scene.add(out4);
+			});
+
 			document.addEventListener('mousedown', (event) => {
 				if (event.button === 0) { // Left mouse button
 					const distance = camera.position.distanceTo(out.position);
-					if (distance < 0.5) { // Adjust the distance threshold as needed
-						window.location.href = 'Corridor.html';
+					if (distance < 0.4) { // Adjust the distance threshold as needed
+						window.location.href = 'MeetingRoomTwo.html';
+					}
+				}
+
+				if (event.button === 0) { // Left mouse button
+					const distance = camera.position.distanceTo(out2.position);
+					if (distance < 0.4) { // Adjust the distance threshold as needed
+						window.location.href = 'MeetingRoomSmall.html';
+					}
+				}
+
+				if (event.button === 0) { // Left mouse button
+					const distance = camera.position.distanceTo(out3.position);
+					if (distance < 0.4) { // Adjust the distance threshold as needed
+						window.location.href = 'PlayRoom.html';
+					}
+				}
+
+				if (event.button === 0) { // Left mouse button
+					const distance = camera.position.distanceTo(out4.position);
+					if (distance < 0.4) { // Adjust the distance threshold as needed
+						window.location.href = 'Part3.html';
 					}
 				}
 			});
@@ -249,7 +327,7 @@
 
 			if (out) {
 				const distance = camera.position.distanceTo(out.position);
-				if (distance < 0.5) {
+				if (distance < 0.4) {
 					out.traverse((child) => {
 						if (child.isMesh) {
 							child.material.color.set(0x2870ed); 
@@ -263,8 +341,57 @@
 					});
 				}
 			}
-			
 
+			if (out2) {
+				const distance = camera.position.distanceTo(out2.position);
+				if (distance < 0.4) {
+					out2.traverse((child) => {
+						if (child.isMesh) {
+							child.material.color.set(0x2870ed); 
+						}
+					});
+				} else {
+					out2.traverse((child) => {
+						if (child.isMesh) {
+							child.material.color.set(0xffffff);
+						}
+					});
+				}
+			}
+
+			if (out3) {
+				const distance = camera.position.distanceTo(out3.position);
+				if (distance < 0.4) {
+					out3.traverse((child) => {
+						if (child.isMesh) {
+							child.material.color.set(0x2870ed); 
+						}
+					});
+				} else {
+					out3.traverse((child) => {
+						if (child.isMesh) {
+							child.material.color.set(0xffffff);
+						}
+					});
+				}
+			}
+
+			if (out4) {
+				const distance = camera.position.distanceTo(out4.position);
+				if (distance < 0.4) {
+					out4.traverse((child) => {
+						if (child.isMesh) {
+							child.material.color.set(0x2870ed); 
+						}
+					});
+				} else {
+					out4.traverse((child) => {
+						if (child.isMesh) {
+							child.material.color.set(0xffffff);
+						}
+					});
+				}
+			}
 
 			renderer.render(scene, camera);
 		}
