@@ -14,31 +14,13 @@
 			width: 100%;
 			touch-action: none; /* Zakázať predvolené správanie dotyku */
 		}
-		#joystick-container {
-			position: absolute;
-			bottom: 20px;
-			left: 20px;
-			width: 150px;
-			height: 150px;
-			background-color: rgba(0, 0, 0, 0.3);
-			border-radius: 50%;
-			z-index: 1000;
-			touch-action: none; /* Zakázať predvolené správanie dotyku na joysticku */
-		}
-		#look-area {
-			position: absolute;
-			top: 0;
-			right: 0;
-			width: 50%;
-			height: 100%;
-			z-index: 1000;
-			touch-action: none; /* Zakázať predvolené správanie dotyku v oblasti pohľadu */
-		}
+		
 	</style>
 </head>
 <body>
 	<div id="joystick-container"></div>
 	<div id="look-area"></div>
+	<button id="home-buttonMobile" onclick="window.location.href='indexMobile.html'"></button>
 
 	<script type="importmap">
 	{

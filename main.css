@@ -100,4 +100,41 @@ html, body {
     transform: scale(1.1);
 }
 
+#home-buttonMobile {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 8vh;
+    height: 8vh;
+    background: none; /* Odstránenie pozadia tlačidla */
+    background-image: url('Images/home.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s;
+    max-width: 150px;
+    z-index: 1000;
+    touch-action: none; /* Zakázať predvolené správanie dotyku v oblasti pohľadu */
+}
 
+#joystick-container {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    width: 150px;
+    height: 150px;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 50%;
+    z-index: 1000;
+    touch-action: none; /* Zakázať predvolené správanie dotyku na joysticku */
+}
+#look-area {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 50%;
+    height: 100%;
+    z-index: 1000;
+    touch-action: none; /* Zakázať predvolené správanie dotyku v oblasti pohľadu */
+}
