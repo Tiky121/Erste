@@ -104,10 +104,10 @@
 
 			loader.load('Models/out.glb', (gltf) => {
 				out = gltf.scene;
-				out.position.set(-4, 0, 0.5);
+				out.position.set(0, 0, 2.5);
 				out.rotation.set(
 					THREE.MathUtils.degToRad(0),   // Rotácia okolo osi X v stupňoch (0°)
-					THREE.MathUtils.degToRad(135),  // Rotácia okolo osi Y v stupňoch (90°)
+					THREE.MathUtils.degToRad(145),  // Rotácia okolo osi Y v stupňoch (90°)
 					THREE.MathUtils.degToRad(0)    // Rotácia okolo osi Z v stupňoch (0°)
 				);
 				out.scale.set(0.3, 0.3, 0.3);
@@ -124,10 +124,10 @@
 
 			loader.load('Models/out.glb', (gltf) => {
 				out2 = gltf.scene;
-				out2.position.set(-0.4, 0, -4);
+				out2.position.set(-2, 0, 0.6);
 				out2.rotation.set(
 					THREE.MathUtils.degToRad(0),   // Rotácia okolo osi X v stupňoch (0°)
-					THREE.MathUtils.degToRad(-45),  // Rotácia okolo osi Y v stupňoch (90°)
+					THREE.MathUtils.degToRad(45),  // Rotácia okolo osi Y v stupňoch (90°)
 					THREE.MathUtils.degToRad(0)    // Rotácia okolo osi Z v stupňoch (0°)
 				);
 				out2.scale.set(0.3, 0.3, 0.3);
@@ -152,14 +152,14 @@
 				if (event.button === 0) { // Left mouse button
 					const distance = camera.position.distanceTo(out.position);
 					if (distance < 1) { // Adjust the distance threshold as needed
-						window.location.href = 'Part3Mobile.html';
+						window.location.href = 'Part2Mobile.html';
 					}
 				}
 
 				if (event.button === 0) { // Left mouse button
 					const distance = camera.position.distanceTo(out2.position);
 					if (distance < 1) { // Adjust the distance threshold as needed
-						window.location.href = 'Part2Mobile.html';
+						window.location.href = 'CorridorMobile.html';
 					}
 				}
 			});
