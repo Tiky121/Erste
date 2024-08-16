@@ -138,3 +138,28 @@ html, body {
     z-index: 1000;
     touch-action: none; /* Zakázať predvolené správanie dotyku v oblasti pohľadu */
 }
+
+#map-overlay-container {
+    position: absolute;
+    top: 26%;
+    right: 3%; /* Umiestnenie do pravej časti obrazovky */
+    transform: translateY(-50%); /* Centrovanie vertikálne */
+    width: 20vw; /* Zmenšenie šírky pozadia */
+    height: 20vw; /* Výška rovnaká ako šírka pre pomer 1:1 */
+    overflow: hidden;
+    background-color: rgba(0, 0, 0, 0.4); /* Pridanie pozadia s transparentnosťou */
+    border-radius: 15px; /* Zaoblené rohy */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#map-overlay-container iframe {
+    width: 90%; /* Zvýšenie šírky iframe nad 100%, aby prekrýval celý kontajner a bol väčší */
+    height: 90%;
+    aspect-ratio: 16 / 9; /* Udržuje pomer strán 16:9 */
+    border: none;
+    border-radius: 10px; /* Zaoblené rohy iframe, aby zapadol do zaobleného kontajnera */
+    transform: scale(1.2); /* Zvýšenie veľkosti iframe, aby vyzeral väčší */
+}
+

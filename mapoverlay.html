@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 100vw;
+            background-color: transparent;
+            margin: 0;
+            overflow: hidden;
+            font-family: 'Inter', sans-serif;
+        }
+        .layer-container {
+            position: relative;
+            width: 90vh; /* Prispôsobí sa šírke obrazovky */
+            height: 90vh; /* Prispôsobí sa výške obrazovky */
+            max-width: 100%;
+            max-height: 100%;
+            background-color: transparent; /* Pre lepšiu viditeľnosť */
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+
+        
+        .clickable-button {
+            position: absolute;
+            background-color: rgba(255, 255, 255, 0); /* Transparent background */
+            cursor: pointer;
+            border: none;
+        }
+        .layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        .layer img {
+            width: 100%;
+            height: 100%;
+            transition: transform 0.3s, filter 0.3s;
+            pointer-events: none; /* Prevent interaction with the image */
+        }
+        .animate {
+            transform: scale(1.05);
+            filter: drop-shadow(0 0 12px #2870ed);
+        }
+        .zoom {
+            transform: scale(0.99);
+        }
+    </style>
+</head>
+<body>
+    <div class="layer-container" id="layer-container">
+        <div class="layer">
+            <img src="Images/index/9.png" id="img9">
+        </div>
+        <div class="layer">
+            <img src="Images/index/8.png" id="img8">
+        </div>
+        <div class="layer">
+            <img src="Images/index/7.png" id="img7">
+        </div>
+        <div class="layer">
+            <img src="Images/index/6.png" id="img6">
+        </div>
+        <div class="layer">
+            <img src="Images/index/5.png" id="img5">
+        </div>
+        <div class="layer">
+            <img src="Images/index/4.png" id="img1">
+        </div>
+        <div class="layer">
+            <img src="Images/index/3.png" id="img2">
+        </div>
+        <div class="layer">
+            <img src="Images/index/2.png" id="img3">
+        </div>
+        <div class="layer">
+            <img src="Images/index/1.png" id="img4">
+        </div>
+        
+        
+        <button class="clickable-button" style="top: 18.5%; left: 45%; width: 18%; height: 13.9%;" 
+                onmouseover="animateImage('img1'); zoomIn();" onmouseout="removeAnimation('img1'); zoomOut();" 
+                onclick="window.open('MeetingRoomOne.html', '_parent')"></button>
+        <button class="clickable-button" style="top: 30%; left: 35%; width: 18%; height: 13.9%;" 
+                onmouseover="animateImage('img2'); zoomIn();" onmouseout="removeAnimation('img2'); zoomOut();" 
+                onclick="window.open('PlayRoom.html', '_parent')"></button>
+        <button class="clickable-button" style="top: 30%; left: 55%; width: 35%; height: 20%;" 
+                onmouseover="animateImage('img3'); zoomIn();" onmouseout="removeAnimation('img3'); zoomOut();" 
+                onclick="window.open('Part1.html', '_parent')"></button>
+        <button class="clickable-button" style="top: 50%; left: 35%; width: 45%; height: 40%;" 
+                onmouseover="animateImage('img4'); zoomIn();" onmouseout="removeAnimation('img4'); zoomOut();" 
+                onclick="window.open('Kitchen.html', '_parent')"></button>
+        <button class="clickable-button" style="top: 10%; left: 59%; width: 25%; height: 20%;" 
+                onmouseover="animateImage('img5'); zoomIn();" onmouseout="removeAnimation('img5'); zoomOut();" 
+                onclick="window.open('index5.html', '_parent')"></button>
+        <button class="clickable-button" style="top: 10%; left: 25%; width: 20%; height: 20%;" 
+                onmouseover="animateImage('img9'); zoomIn();" onmouseout="removeAnimation('img9') ; zoomOut();" 
+                onclick="window.open('index6.html', '_parent')"></button>
+        <button class="clickable-button" style="top: 30%; left: 23%; width: 10%; height: 10%;" 
+                onmouseover="animateImage('img7'); zoomIn();" onmouseout="removeAnimation('img7') ; zoomOut();" 
+                onclick="window.open('MeetingRoomSmall.html', '_parent')"></button>
+        <button class="clickable-button" style="top: 25%; left: 10%; width: 12%; height: 15%;" 
+                onmouseover="animateImage('img8'); zoomIn();" onmouseout="removeAnimation('img8') ; zoomOut();" 
+                onclick="window.open('MeetingRoomTwo.html', '_parent')"></button>
+    </div>
+
+    <script>
+        function animateImage(id) {
+            document.getElementById(id).classList.add('animate');
+        }
+
+        function removeAnimation(id) {
+            document.getElementById(id).classList.remove('animate');
+        }
+
+        function zoomIn() {
+            document.getElementById('layer-container').classList.add('zoom');
+        }
+
+        function zoomOut() {
+            document.getElementById('layer-container').classList.remove('zoom');
+        }
+    </script>
+</body>
+</html>
