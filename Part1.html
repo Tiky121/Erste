@@ -22,12 +22,13 @@
 			</div>
 		</div>
 		<img id="logo" src="Images/logo.png" alt="Logo"> 
-		<button id="vr-button" onclick="window.location.href='VRPart3.html'"></button>
+		<button id="vr-button" onclick="window.location.href='VRPart1.html'"></button>
 		<button id="home-button" onclick="window.location.href='indexPC.html'"></button>
 		<div id="map-overlay-container">
 			<iframe src="./mapoverlay.html" frameborder="0"></iframe>
 		</div>
 	</div>
+	
 	
 
 	<script type="importmap">
@@ -47,7 +48,7 @@
 		import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 		let renderer, camera, controls, scene, splat, loader, floorMesh;
-		let out, outMaterial, out2, outMaterial2;
+		let out, outMaterial, out2, outMaterial2, out3, outMaterial3;
 		let moveSpeed = 0.22;
 		let direction = new Vector3();
 		let frontVector = new Vector3();
@@ -88,7 +89,7 @@
 			scene.background = new Color('white');
 
 			splat = new LumaSplatsThree({
-				source: 'https://lumalabs.ai/capture/d7c21a76-8967-44a7-8390-31d75716c657',
+				source: 'https://lumalabs.ai/capture/a65e6860-f89b-42f0-aa02-af4fef16bf4f',
 				enableThreeShaderIntegration: true,
 				particleRevealEnabled: true,
 			});
@@ -97,8 +98,8 @@
 				transform.decompose(camera.position, camera.quaternion, new Vector3());
 
 				// Tu môžeme preťažiť pozíciu kamery po aplikovaní transformácie
-				camera.position.x = 0;  // Nastavte súradnicu X podľa potreby
-				camera.position.z = 1.5;  // Nastavte súradnicu Z podľa potreby
+				camera.position.x = -1;  // Nastavte súradnicu X podľa potreby
+				camera.position.z = -1.3;  // Nastavte súradnicu Z podľa potreby
 			};
 
 			splat.onLoad = () => {
@@ -115,7 +116,7 @@
 
 			loader = new GLTFLoader();
 
-			loader.load('Models/Part3/floor.glb', (gltf) => {
+			loader.load('Models/Part1/floor.glb', (gltf) => {
 				floorMesh = gltf.scene;
 				floorMesh.position.set(0, -0.5, 0);
 				floorMesh.traverse((child) => {
@@ -129,10 +130,10 @@
 
 			loader.load('Models/out.glb', (gltf) => {
 				out = gltf.scene;
-				out.position.set(0, 0, 2.5);
+				out.position.set(-3.5, -0.2, 0.3);
 				out.rotation.set(
 					THREE.MathUtils.degToRad(0),   // Rotácia okolo osi X v stupňoch (0°)
-					THREE.MathUtils.degToRad(145),  // Rotácia okolo osi Y v stupňoch (90°)
+					THREE.MathUtils.degToRad(90),  // Rotácia okolo osi Y v stupňoch (90°)
 					THREE.MathUtils.degToRad(0)    // Rotácia okolo osi Z v stupňoch (0°)
 				);
 				out.scale.set(0.3, 0.3, 0.3);
@@ -149,10 +150,10 @@
 
 			loader.load('Models/out.glb', (gltf) => {
 				out2 = gltf.scene;
-				out2.position.set(-2, 0, 0.6);
+				out2.position.set(1.5, -0.2, -2.8);
 				out2.rotation.set(
 					THREE.MathUtils.degToRad(0),   // Rotácia okolo osi X v stupňoch (0°)
-					THREE.MathUtils.degToRad(45),  // Rotácia okolo osi Y v stupňoch (90°)
+					THREE.MathUtils.degToRad(-50),  // Rotácia okolo osi Y v stupňoch (90°)
 					THREE.MathUtils.degToRad(0)    // Rotácia okolo osi Z v stupňoch (0°)
 				);
 				out2.scale.set(0.3, 0.3, 0.3);
@@ -167,18 +168,44 @@
 				scene.add(out2);
 			});
 
+			loader.load('Models/out.glb', (gltf) => {
+				out3 = gltf.scene;
+				out3.position.set(-2.75, -0.2, -0.75);
+				out3.rotation.set(
+					THREE.MathUtils.degToRad(0),   // Rotácia okolo osi X v stupňoch (0°)
+					THREE.MathUtils.degToRad(35),  // Rotácia okolo osi Y v stupňoch (90°)
+					THREE.MathUtils.degToRad(0)    // Rotácia okolo osi Z v stupňoch (0°)
+				);
+				out3.scale.set(0.3, 0.3, 0.3);
+
+				out3.traverse((child) => {
+					if (child.isMesh) {
+						outMaterial3 = new THREE.MeshStandardMaterial({ color: 0xffffff });
+						child.material = outMaterial3;
+					}
+				});
+
+				scene.add(out3);
+			});
+
 			document.addEventListener('mousedown', (event) => {
 				if (event.button === 0) { // Left mouse button
 					const distance = camera.position.distanceTo(out.position);
 					if (distance < 1) { // Adjust the distance threshold as needed
-						window.location.href = 'Part2.html';
+						window.location.href = 'Kitchen.html';
 					}
 				}
 
 				if (event.button === 0) { // Left mouse button
 					const distance = camera.position.distanceTo(out2.position);
 					if (distance < 1) { // Adjust the distance threshold as needed
-						window.location.href = 'Corridor.html';
+						window.location.href = 'Part2.html';
+					}
+				}
+				if (event.button === 0) { // Left mouse button
+					const distance = camera.position.distanceTo(out3.position);
+					if (distance < 1) { // Adjust the distance threshold as needed
+						window.location.href = 'PlayRoom.html';
 					}
 				}
 			});
@@ -298,6 +325,25 @@
 					});
 				}
 			}
+
+			if (out3) {
+				const distance = camera.position.distanceTo(out3.position);
+				if (distance < 1) {
+					out3.traverse((child) => {
+						if (child.isMesh) {
+							child.material.color.set(0x2870ed); 
+						}
+					});
+				} else {
+					out3.traverse((child) => {
+						if (child.isMesh) {
+							child.material.color.set(0xffffff);
+						}
+					});
+				}
+			}
+			
+
 			
 
 
