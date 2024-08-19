@@ -46,7 +46,7 @@
 		import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 		let renderer, camera, controls, scene, splat, loader, floorMesh, out, outMaterial;
-		let moveSpeed = 0.1;
+		let moveSpeed = 0.08;
 		let direction = new Vector3();
 		let frontVector = new Vector3();
 		let sideVector = new Vector3();
@@ -65,7 +65,7 @@
 			camera.position.x = 3;
 
 			controls = new PointerLockControls(camera, document.body);
-			controls.minPolarAngle = MathUtils.degToRad(75); // Limit looking down to 45 degrees
+			controls.minPolarAngle = MathUtils.degToRad(85); // Limit looking down to 45 degrees
 			controls.maxPolarAngle = MathUtils.degToRad(125); // Limit looking up to 135 degrees
 
 			controls.addEventListener('lock', () => {
@@ -93,6 +93,9 @@
 
 			splat.onInitialCameraTransform = transform => {
 				transform.decompose(camera.position, camera.quaternion, new Vector3());
+
+				
+				camera.position.y = -0.08;
 			};
 
 			splat.onLoad = () => {

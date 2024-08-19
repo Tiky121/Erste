@@ -47,7 +47,7 @@
 
 		let renderer, camera, controls, scene, splat, loader, floorMesh;
 		let out, outMaterial, out2, outMaterial2, out3, outMaterial3;
-		let moveSpeed = 0.15;
+		let moveSpeed = 0.08;
 		let direction = new Vector3();
 		let frontVector = new Vector3();
 		let sideVector = new Vector3();
@@ -66,7 +66,7 @@
 			camera.position.x = 0;
 
 			controls = new PointerLockControls(camera, document.body);
-			controls.minPolarAngle = MathUtils.degToRad(75); // Limit looking down to 45 degrees
+			controls.minPolarAngle = MathUtils.degToRad(80); // Limit looking down to 45 degrees
 			controls.maxPolarAngle = MathUtils.degToRad(125); // Limit looking up to 135 degrees
 
 			controls.addEventListener('lock', () => {
@@ -98,6 +98,7 @@
 				// Tu môžeme preťažiť pozíciu kamery po aplikovaní transformácie
 				camera.position.x = 1.33;  // Nastavte súradnicu X podľa potreby
 				camera.position.z = 0.6;  // Nastavte súradnicu Z podľa potreby
+				camera.position.y = -0.08;
 			};
 
 			splat.onLoad = () => {
