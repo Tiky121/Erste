@@ -138,6 +138,25 @@
 				scene.add(out2);
 			});
 
+			const textureLoader = new THREE.TextureLoader();
+        	const texture = textureLoader.load('Images/QR.png');
+
+			const geometry = new THREE.PlaneGeometry(1, 1);
+        	const material = new THREE.MeshBasicMaterial({ map: texture, transparent: true });
+        	const plane = new THREE.Mesh(geometry, material);
+
+			// Nastavenie pozície, rotácie a mierky PlaneGeometry
+			plane.position.set(0.84, -0.85, 3.7);
+			plane.rotation.set(
+				THREE.MathUtils.degToRad(0),   // Rotácia okolo osi X v stupňoch (0°)
+				THREE.MathUtils.degToRad(190),  // Rotácia okolo osi Y v stupňoch (135°)
+				THREE.MathUtils.degToRad(0)    // Rotácia okolo osi Z v stupňoch (0°)
+			);
+			plane.scale.set(0.35, 0.35, 0.35);
+
+			// Pridanie PlaneGeometry do scény
+			scene.add(plane);
+
 			const light = new THREE.AmbientLight(0xffffff);
 			scene.add(light);
 
@@ -156,6 +175,11 @@
 					const distance = camera.position.distanceTo(out2.position);
 					if (distance < 1) { // Adjust the distance threshold as needed
 						window.location.href = 'Part2Mobile.html';
+					}
+
+					const distancePlane = camera.position.distanceTo(plane.position);
+					if (distancePlane < 2) { // Ľavé tlačidlo myši a podmienka vzdialenosti
+						window.open('https://www.erstedigital.com/en/career/positions-Austria', '_blank'); // Otvorenie novej stránky v novom tabe
 					}
 				}
 			});
